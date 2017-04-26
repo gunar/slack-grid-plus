@@ -22,7 +22,7 @@
   "converted_from_user_script": true,
   "description": "Enhance Slack Grid",
   "name": "Slack Grid Plus",
-  "version": "1",
+  "version": "2",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",

@@ -18,7 +18,7 @@
         const ts = Number(TS.utility.getPathFromSlackUrl(anchor.href)[2].substr(1))/1000000
         setTimeout(() => {
           TS.client.ui.scrollMsgsSoMsgIsInView(ts, true, true, true)
-        }, 500)
+        }, 1000)
       }
     })
   }, 500)
