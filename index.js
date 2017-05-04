@@ -7,7 +7,7 @@
 (function() {
   'use strict';
 
-  function getUrlVars(url) {
+  function getQueryParams(url) {
     const vars = []
     let hash
     const hashes = url.slice(url.indexOf('?') + 1).split('&')
@@ -25,7 +25,7 @@
     if (!url || !url.match(/\/\/[^.]+.slack.com\/archives/g) || url.includes(window.location.origin)) return
     const id = TS.utility.getChannelNameFromUrl(url)
     const ts = Number(TS.utility.getPathFromSlackUrl(url)[2].substr(1))/1000000
-    const url_vars = getUrlVars(url)
+    const url_vars = getQueryParams(url)
 
     // No thread_ts given, so we're linking to a message
     if (!url_vars.thread_ts) return TS.client.ui.tryToJump(id, ts)
