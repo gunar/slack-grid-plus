@@ -19,9 +19,9 @@
   }
 
   function goToMessage(ev) {
+    ev.preventDefault();
     const anchor = ev.target
     const url = $(anchor).data('referer-original-href')
-    ev.preventDefault();
     if (!url || !url.match(/\/\/[^.]+.slack.com\/archives/g) || url.includes(window.location.origin)) return
     const id = TS.utility.getChannelNameFromUrl(url)
     const ts = Number(TS.utility.getPathFromSlackUrl(url)[2].substr(1))/1000000
@@ -32,7 +32,7 @@
 
     // We are linking to a thread reply
     const model_ob = TS.shared.getModelObById(url_vars.cid)
-    TS.ui.replies.openConversation(model_ob, url_vars.thread_ts)// , null, origin)
+    TS.ui.replies.openConversation(model_ob, url_vars.thread_ts)
   }
 
   $(document).on('click', 'a', goToMessage)
