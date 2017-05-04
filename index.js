@@ -6,20 +6,34 @@
 
 (function() {
   'use strict';
-  setInterval(() => {
-    $('a').each(function(index) {
-      if (!this.href.match(/\/\/[^.]+.slack.com\/archives/g) || this.href.includes(window.location.origin)) return
-      // this.style.border = '1px solid red'
-      this.onclick = ev => {
-        ev.preventDefault();
-        const anchor = ev.target
-        const id = TS.utility.getChannelNameFromUrl(anchor.href)
-        TS.channels.displayChannel({ id })
-        const ts = Number(TS.utility.getPathFromSlackUrl(anchor.href)[2].substr(1))/1000000
-        setTimeout(() => {
-          TS.client.ui.scrollMsgsSoMsgIsInView(ts, true, true, true)
-        }, 1000)
-      }
-    })
-  }, 500)
+
+  function getUrlVars(url) {
+    const vars = []
+    let hash
+    const hashes = url.slice(url.indexOf('?') + 1).split('&')
+    for (let i = 0; i < hashes.length; i++) {
+      hash = hashes[i].split('=')
+      vars[hash[0]] = hash[1]
+    }
+    return vars
+  }
+
+  function goToMessage(ev) {
+    const anchor = ev.target
+    const url = $(anchor).data('referer-original-href')
+    ev.preventDefault();
+    if (!url || !url.match(/\/\/[^.]+.slack.com\/archives/g) || url.includes(window.location.origin)) return
+    const id = TS.utility.getChannelNameFromUrl(url)
+    const ts = Number(TS.utility.getPathFromSlackUrl(url)[2].substr(1))/1000000
+    const url_vars = getUrlVars(url)
+
+    // No thread_ts given, so we're linking to a message
+    if (!url_vars.thread_ts) return TS.client.ui.tryToJump(id, ts)
+
+    // We are linking to a thread reply
+    const model_ob = TS.shared.getModelObById(url_vars.cid)
+    TS.ui.replies.openConversation(model_ob, url_vars.thread_ts)// , null, origin)
+  }
+
+  $(document).on('click', 'a', goToMessage)
 })();
