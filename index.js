@@ -35,5 +35,5 @@
     TS.ui.replies.openConversation(model_ob, url_vars.thread_ts)
   }
 
-  $(document).on('click', 'a', goToMessage)
+  $(document).on('click', 'a[data-referer-original-href*=".slack.com/archives"]', goToMessage)
 })();
