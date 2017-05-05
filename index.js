@@ -19,10 +19,11 @@
   }
 
   function goToMessage(ev) {
-    ev.preventDefault();
     const anchor = ev.target
     const url = $(anchor).data('referer-original-href')
-    if (!url || !url.match(/\/\/[^.]+.slack.com\/archives/g) || url.includes(window.location.origin)) return
+    if (!url || !url.match(/\/\/[^.]+.slack.com\/(archives|messages)/g) || url.includes(window.location.origin)) return
+
+    ev.preventDefault();
     const id = TS.utility.getChannelNameFromUrl(url)
     const ts = Number(TS.utility.getPathFromSlackUrl(url)[2].substr(1))/1000000
     const url_vars = getQueryParams(url)
@@ -35,5 +36,6 @@
     TS.ui.replies.openConversation(model_ob, url_vars.thread_ts)
   }
 
-  $(document).on('click', 'a[data-referer-original-href*=".slack.com/archives"]', goToMessage)
+  // https://www.w3.org/TR/selectors/#attribute-substrings
+  $(document).on('click', 'a', goToMessage)
 })();
