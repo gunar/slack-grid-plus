@@ -1,2 +1,2 @@
-#!/usr/bin/bash
-zip extension.zip icon*.png *.js manifest.json                                                                                 
+#!/bin/sh
+zip extension.zip icon*.png *.js manifest.json
