@@ -43,5 +43,7 @@
   }
 
   // https://www.w3.org/TR/selectors/#attribute-substrings
-  $(document).on('click', 'a', goToMessage)
+  $(document).on('click', 'a[data-referer-original-href*=".slack.com/archives"]', goToMessage)
+  $(document).on('click', 'a[data-referer-original-href*=".slack.com/messages"]', goToMessage)
+  $(document).on('click', 'a[data-referer-original-href*=".slack.com/files"]', goToMessage)
 })();
